@@ -13,17 +13,7 @@ data class BasicTennisScore(
         const val MAX_POINTS = 4
     }
 
-    private fun getScore(points: Int): String = when (points) {
-        0 -> "0"
-        1 -> "15"
-        2 -> "30"
-        3 -> "40"
-        else -> "A"
-    }
-
     private fun printScoreDefault(): String = "${getScore(server.points())}:${getScore(receiver.points())}"
-
-    private fun printWinner(player: TennisPlayer): String = "${player.name()} Wins"
 
     private fun differenceBetweenPlayers(): Int = abs(server.points() - receiver.points())
 
@@ -39,7 +29,6 @@ data class BasicTennisScore(
         PlayerType.SERVER -> copy(server = server.scores())
         else -> copy(receiver = receiver.scores())
     }
-
 
     fun printScore(): String = when {
         winner is TennisPlayer -> printWinner(winner)
