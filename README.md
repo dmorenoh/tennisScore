@@ -17,7 +17,7 @@ The workflow is very simple:
 2. Add score to a given player (either SERVER/RECEIVER) 
 3. Try to detect if after that there is a winner, and if so, `TennisScore` is set with that winner player.
 ```kotlin
-fun BasicTennisScore.playerScores(playerType: PlayerType): Either<DomainError, BasicTennisScore> =
+    fun playerScores(playerType: PlayerType): Either<DomainError, BasicTennisScore> =
     if (winner != EmptyPlayer) Either.left(DomainError("There is a winner already"))
     else Either.right(this.addScoreTo(playerType).calculateWinner())
 ```
