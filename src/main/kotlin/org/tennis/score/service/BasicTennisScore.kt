@@ -41,9 +41,9 @@ data class BasicTennisScore(
         else Either.right(addScoreTo(playerType).processWinner())
 
     private fun playerAhead(): Player = when {
-        server.isAheadOf(receiver) -> server
+        matchIsEven() -> EmptyPlayer
         receiver.isAheadOf(server) -> receiver
-        else -> EmptyPlayer
+        else -> server
     }
 
     private fun winner(): Player =
