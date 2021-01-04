@@ -144,7 +144,7 @@ class BasicTennisScoreTest {
     fun `should return server as winner when server scores and there is no min diff`() {
         val basicTennisScore = BasicTennisScore(
             server = TennisPlayer("Server", PlayerType.SERVER, 3),
-            receiver = TennisPlayer("Receiver", PlayerType.RECEIVER, 2),
+            receiver = TennisPlayer("Receiver", PlayerType.RECEIVER, 3),
             minToWin = 0
         )
         val result = basicTennisScore.playerScores(PlayerType.SERVER)
