@@ -19,3 +19,4 @@ data class TennisPlayer(override val name: String, private val type: PlayerType,
 }
 
 fun TennisPlayer.scores(): TennisPlayer = copy(points = this.points() + 1)
+fun TennisPlayer.printScore(): String = getScore(this.points())

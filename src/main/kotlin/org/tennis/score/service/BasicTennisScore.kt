@@ -13,7 +13,7 @@ data class BasicTennisScore(
         const val MAX_POINTS = 4
     }
 
-    private fun printScoreDefault(): String = "${getScore(server.points())}:${getScore(receiver.points())}"
+    private fun printScoreDefault(): String = "${server.printScore()}:${receiver.printScore()}"
 
     private fun differenceBetweenPlayers(): Int = abs(server.points() - receiver.points())
 
@@ -31,20 +31,27 @@ data class BasicTennisScore(
     }
 
     fun printScore(): String = when {
-        winner is TennisPlayer -> printWinner(winner)
+        winner != EmptyPlayer -> printWinner(winner as TennisPlayer)
         matchIsEven() -> printScoreAsEven()
         else -> this.printScoreDefault()
     }
 
     fun playerScores(playerType: PlayerType): Either<DomainError, BasicTennisScore> =
         if (winner != EmptyPlayer) Either.left(DomainError("There is a winner already"))
-        else Either.right(this.addScoreTo(playerType).calculateWinner())
+        else Either.right(addScoreTo(playerType).processWinner())
 
-    private fun calculateWinner(): BasicTennisScore = when {
-        receiver.isAheadOf(server) && receiver.reaches(MAX_POINTS) && enoughAdvantage() -> this.copy(winner = receiver)
-        server.isAheadOf(receiver) && server.reaches(MAX_POINTS) && enoughAdvantage() -> this.copy(winner = server)
-        else -> this
+    private fun playerAhead(): Player = when {
+        server.isAheadOf(receiver) -> server
+        receiver.isAheadOf(server) -> receiver
+        else -> EmptyPlayer
     }
+
+    private fun winner(): Player =
+        playerAhead().takeIf { it is TennisPlayer && it.reaches(MAX_POINTS) && enoughAdvantage() }
+            ?: EmptyPlayer
+
+    private fun processWinner(): BasicTennisScore = copy(winner = winner())
+
 }
 
 
