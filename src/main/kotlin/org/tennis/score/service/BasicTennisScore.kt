@@ -19,11 +19,9 @@ data class BasicTennisScore(
 
     private fun matchIsEven(): Boolean = server.points() == receiver.points()
 
-    private fun enoughAdvantage(): Boolean = differenceBetweenPlayers() >= minToWin
+    private fun isDeuce(): Boolean = matchIsEven() && server.reaches(MAX_POINTS)
 
-    private fun printScoreAsEven(): String =
-        if (server.reaches(MAX_POINTS)) "40:40"
-        else this.printScoreDefault()
+    private fun enoughAdvantage(): Boolean = differenceBetweenPlayers() >= minToWin
 
     private fun addScoreTo(type: PlayerType): BasicTennisScore = when (type) {
         PlayerType.SERVER -> copy(server = server.scores())
@@ -32,8 +30,8 @@ data class BasicTennisScore(
 
     fun printScore(): String = when {
         winner != EmptyPlayer -> printWinner(winner as TennisPlayer)
-        matchIsEven() -> printScoreAsEven()
-        else -> this.printScoreDefault()
+        isDeuce() -> "40:40"
+        else -> printScoreDefault()
     }
 
     fun playerScores(playerType: PlayerType): Either<DomainError, BasicTennisScore> =

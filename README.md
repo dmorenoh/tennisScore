@@ -26,8 +26,8 @@ This returns the formatted score value and does not change the object status.
 ```kotlin
 fun printScore(): String = when {
     winner != EmptyPlayer -> printWinner(winner as TennisPlayer)
-    matchIsEven() -> printScoreAsEven()
-    else -> this.printScoreDefault()
+    isDeuce() -> "40:40"
+    else -> printScoreDefault()
 }
 ```
 As you can see, immutability was considered in the entire code. Every change implies a new object creation, this is re-enforced by following functional paradigms. 
